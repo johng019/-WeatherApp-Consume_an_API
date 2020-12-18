@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div id="myStyle">
+    <link rel="stylesheet" href="myStyle2.css" type="text/css" />
+    <!--Display the data : give each element an id to be mapped to a JSON return object-->   
+    <h1>Enter a Zip Code to get Weather Information <span><input id="zip" type="text" height="18px" style="background-color:lightgray"/></span></h4>
+    <button id="btn" type="submit" >Get Weather</button>
+    <h2>Current Weather in : <span id="name"></span></h2>
+    <h2>Temp : <span id="temp"></span>&deg;F</h4>
+    <h2>Humidity :<span id="humidity"></span>%</h4>
+    <h2>Wind Speed :<span id="windSpeed"></span></h4>
+    <h2>Current Conditions : <span id="weather"></span id="myIcon"><span</h4>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        document.getElementById("zip").focus();
+    })//Brings the curser to the textbox at page load
+
+    $(document).keypress(function (e) {
+        if (e.which == 13) {
+            $("#btn").click();
+        }
+    });//Allows use of the ENTER key to submit the zip code
+
+    $('#btn').click(function () {
+        var zip = document.getElementById("zip").value;//gets the textbox zip code and assigns it to the variable zip
+        // The zip variable is then placed into the url string where the zip code id would go.
+        $.get('https://api.openweathermap.org/data/2.5/weather?zip=' + zip + '&APPID=d1aec1a061260945c69b0a8e3f2546b6&units=imperial', function (response) {
+            $('#name').text(response.name);
+            $('#temp').text(response.main.temp);
+            $('#humidity').text(response.main.humidity);
+            $('#windSpeed').text(response.wind.speed);
+            $('#weather').text(response.weather[0].description);
+            $('#myIcon').html("<img src='http://openweathermap.org/img/w/" + response.weather[0].icon + ".png'>");
+            console.log(response);
+        });
+    });
+    //the returned JASON object specified- ie:name,temp,etc.. is then mapped to the html element with the corresponding ID name
+</script>
+</body>
+</html>
